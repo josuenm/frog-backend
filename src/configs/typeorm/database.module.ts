@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { config } from 'dotenv';
+config();
 
 @Module({
   imports: [
@@ -7,12 +9,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'root',
-      password: 'root',
-      database: 'frog',
-      synchronize: false,
+      username: process.env.USER,
+      password: process.env.PASSWORD,
+      database: process.env.DATABASE,
+      synchronize: Boolean(process.env.SYNC),
       logging: true,
-      entities: ['dist/**/*.entity{.ts,.js}'],
+      entities: ['dist/modules/**/*.entity{.ts,.js}'],
       migrations: ['dist/migrations/*{.ts,.js}'],
     }),
   ],

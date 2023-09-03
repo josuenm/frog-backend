@@ -1,10 +1,12 @@
 import { Module, ValidationPipe } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
-import { UsersModule } from './modules/users/users.module';
 import { DatabaseModule } from './configs/typeorm/database.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
-  imports: [UsersModule, DatabaseModule],
+  imports: [ConfigModule.forRoot(), UsersModule, DatabaseModule, AuthModule],
   controllers: [],
   providers: [
     {

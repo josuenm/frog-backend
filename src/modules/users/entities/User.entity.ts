@@ -1,25 +1,27 @@
+import { hashSync } from 'bcrypt';
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
-enum Gender {
-  male = 'male',
-  female = 'female',
-}
+import { Gender } from '../types/RegisterDTO';
+import { Rule } from './Rule.entity';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column({ length: 50 })
+  @Column({ length: 50, name: 'first_name' })
   firstName: string;
 
-  @Column({ length: 50 })
+  @Column({ length: 50, name: 'last_name' })
   lastName: string;
 
   @Column({ length: 25, unique: true })
@@ -34,12 +36,24 @@ export class User {
   @Column({ type: 'date' })
   dateBirth: Date;
 
-  @Column({ enum: Gender, default: Gender.male })
+  @Column({ type: 'enum', enum: Gender, default: Gender.male })
   gender: Gender;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date;
+
+  @ManyToMany(() => Rule)
+  @JoinTable()
+  roles: Rule[];
+
+  @BeforeInsert()
+  hashPassword() {
+    this.password = hashSync(this.password, 10);
+  }
 }

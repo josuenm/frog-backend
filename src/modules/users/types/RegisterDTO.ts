@@ -1,5 +1,5 @@
 import {
-  IsDate,
+  IsDateString,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -42,7 +42,7 @@ export function IsValidUsername(validationOptions?: ValidationOptions) {
   };
 }
 
-enum Gender {
+export enum Gender {
   male = 'male',
   female = 'female',
 }
@@ -63,7 +63,7 @@ export class RegisterDTO {
   @IsValidUsername()
   username: string;
 
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty()
   dateBirth: Date;
 

@@ -52,6 +52,9 @@ export class User {
   @JoinTable()
   roles: Rule[];
 
+  @Column({ name: 'refresh_token', nullable: true })
+  refreshToken: string;
+
   @BeforeInsert()
   hashPassword() {
     this.password = hashSync(this.password, 10);

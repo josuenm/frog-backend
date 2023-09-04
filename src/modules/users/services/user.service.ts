@@ -43,4 +43,15 @@ export class UserService {
 
     return user;
   }
+
+  public async update(
+    find: FindOptionsWhere<User>,
+    update: Partial<User>,
+  ): Promise<User> {
+    const user = await this.findOne(find);
+
+    Object.assign(user, update);
+
+    return await this.userRepository.save(user);
+  }
 }
